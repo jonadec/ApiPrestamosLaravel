@@ -14,12 +14,12 @@ Route::get('/user', function (Request $request) {
 
 Route::prefix('auth')->group(function(){
     Route::post('/login',[AuthController::class, 'login']);
+    Route::post('/register',[AuthController::class, 'register']);
 });
 
 Route::prefix('users')->group(function(){
     Route::get('/all',[UserController::class, 'getUsers']);
     Route::get('/{id}',[UserController::class, 'getUser']);
-    Route::post('/create',[UserController::class, 'createUser']);
     Route::put('/update/{id}',[UserController::class, 'updateUser']);
     Route::delete('/delete/{id}',[UserController::class,'deleteUser']);
 });
