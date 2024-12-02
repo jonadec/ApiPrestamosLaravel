@@ -21,10 +21,7 @@ class AuthController extends Controller
     }
 
     public function register(Request $request){
-        // Validar datos de entrada
-       
-     
-        // Intentar crear el usuario
+
         try {
             $user = User::create([
                 'name' => $request->name,
@@ -41,7 +38,7 @@ class AuthController extends Controller
             ], 201);
      
         } catch (\Exception $e) {
-            // Error en caso de que falle el registro
+
             return response()->json([
                 'message' => 'Registration failed',
                 'error' => $e->getMessage()

@@ -37,6 +37,8 @@ Route::prefix('loans')->group(function() {
     Route::get('/{id}', [LoanController::class, 'getLoan']);
     Route::post('/create', [LoanController::class, 'createLoan']);
     Route::put('/update/{id}', [LoanController::class, 'updateLoan']);
+    Route::put('/accept/{id}', [LoanController::class, 'acceptLoan']);
+    Route::put('/handin/{id}', [LoanController::class, 'handinLoan']);
     Route::delete('/delete/{id}', [LoanController::class, 'deleteLoan']);
 });
 
