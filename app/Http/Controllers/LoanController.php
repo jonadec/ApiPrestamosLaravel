@@ -27,10 +27,17 @@ class LoanController extends Controller
     if (!$loan) {
         return response()->json(['message' => 'Loan not found'], 404);
     }
+    $product = $loan->product;
+    if ($product->quantity <= 0) {
+        return response()->json(['message' => 'No hay suficientes productos disponibles'], 400);
+    }
 
     $loan->state = 2; // Cambia el estado a "aceptado"
     $loan->loan_date = $request->input('loan_date'); // Fecha proporcionada en la solicitud
     $loan->save();
+
+    $product->quantity -= 1;
+    $product->save();
 
     return response()->json([
         'message' => 'Loan accepted successfully',
@@ -46,15 +53,24 @@ public function handinLoan(Request $request, $id)
         return response()->json(['message' => 'Loan not found'], 404);
     }
 
-    $loan->state = 3; // Cambia el estado a "aceptado"
+    $product = $loan->product; // Obtiene el producto asociado al préstamo
+
+    // Cambia el estado a "entregado"
+    $loan->state = 3; 
     $loan->return_date = $request->input('return_date'); // Fecha proporcionada en la solicitud
     $loan->save();
 
+    // Suma 1 a la cantidad disponible del producto
+    $product->quantity += 1;
+    $product->save();
+
     return response()->json([
-        'message' => 'Loan accepted successfully',
-        'loan' => $loan
+        'message' => 'Loan handed in successfully',
+        'loan' => $loan,
+        'product' => $product
     ]);
 }
+    
 
 
     public function createLoan(Request $request)
